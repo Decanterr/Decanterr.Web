@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none">
+  <defs>
+    <linearGradient id="wm-bg" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0c1a2e"/>
+      <stop offset="1" stop-color="#081322"/>
+    </linearGradient>
+    <linearGradient id="wm-page" x1="8" y1="10" x2="42" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5eead4"/>
+      <stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon mark (60×60) -->
+  <rect width="60" height="60" rx="13" fill="url(#wm-bg)"/>
+  <!-- Back page amber -->
+  <rect x="19" y="7" width="24" height="33" rx="3.5" fill="#f59e0b" opacity="0.55" transform="rotate(9 31 23.5)"/>
+  <!-- Middle page -->
+  <rect x="17" y="10" width="24" height="33" rx="3.5" fill="#0d9488" opacity="0.75" transform="rotate(3 29 26.5)"/>
+  <!-- Front page -->
+  <rect x="14" y="13" width="25" height="34" rx="3.5" fill="url(#wm-page)"/>
+  <!-- Text lines on front page -->
+  <rect x="18" y="21" width="16" height="2" rx="1" fill="white" opacity="0.90"/>
+  <rect x="18" y="26" width="12" height="2" rx="1" fill="white" opacity="0.65"/>
+  <rect x="18" y="31" width="14" height="2" rx="1" fill="white" opacity="0.65"/>
+  <rect x="18" y="36" width="9"  height="2" rx="1" fill="white" opacity="0.40"/>
+
+  <!-- Wordmark text "Decanterr" -->
+  <text
+    x="74"
+    y="42"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    font-weight="700"
+    font-size="32"
+    letter-spacing="-1"
+    fill="#14b8a6"
+  >Decanterr</text>
+</svg>
