@@ -1,6 +1,6 @@
 # Decanterr Web
 
-The React frontend for **Decanterr** — a self-hosted audiobook library manager. Talks to [Decanterr.API](../Decanterr.API) for library data, liberation (download/decrypt) queue management, and live progress via SignalR.
+The React frontend for **Decanterr** — a self-hosted audiobook library manager. Talks to [Decanterr.API](../Decanterr.API) for library data, processing queue management, and live progress via SignalR.
 
 ## Tech stack
 

@@ -1,28 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
   <defs>
-    <linearGradient id="fg-bg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0c1a2e"/>
-      <stop offset="1" stop-color="#081322"/>
+    <!-- Background Card Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5E0B2B"/>
+      <stop offset="50%" stop-color="#3B051A"/>
+      <stop offset="100%" stop-color="#1A020B"/>
     </linearGradient>
-    <linearGradient id="fg-page" x1="26" y1="24" x2="66" y2="78" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#5eead4"/>
-      <stop offset="1" stop-color="#0d9488"/>
+
+    <!-- Rich Burgundy Wine Fill Gradient -->
+    <linearGradient id="wineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D61C4E"/>
+      <stop offset="50%" stop-color="#8C0F35"/>
+      <stop offset="100%" stop-color="#4A051A"/>
     </linearGradient>
-    <filter id="fg-shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
-    </filter>
   </defs>
-  <!-- Rounded app icon background -->
-  <rect width="100" height="100" rx="22" fill="url(#fg-bg)"/>
-  <!-- Back page — amber/gold accent, rotated -->
-  <rect x="32" y="14" width="40" height="54" rx="6" fill="#f59e0b" opacity="0.55" transform="rotate(9 52 41)"/>
-  <!-- Middle page -->
-  <rect x="29" y="19" width="40" height="54" rx="6" fill="#0d9488" opacity="0.75" transform="rotate(3.5 49 46)"/>
-  <!-- Front page — main teal gradient -->
-  <rect x="24" y="24" width="42" height="56" rx="6" fill="url(#fg-page)" filter="url(#fg-shadow)"/>
-  <!-- Text line decorations on front page -->
-  <rect x="32" y="37" width="26" height="3.5" rx="1.75" fill="white" opacity="0.90"/>
-  <rect x="32" y="46" width="20" height="3.5" rx="1.75" fill="white" opacity="0.65"/>
-  <rect x="32" y="55" width="24" height="3.5" rx="1.75" fill="white" opacity="0.65"/>
-  <rect x="32" y="64" width="15" height="3.5" rx="1.75" fill="white" opacity="0.40"/>
+
+  <!-- Icon Canvas Background -->
+  <rect width="500" height="500" rx="90" fill="url(#bgGrad)"/>
+
+  <!-- DECANTER & LIQUID BASE -->
+  <g id="decanter-group">
+    <!-- Decanter Wine Base Fill -->
+    <path d="M 235 340
+             C 215 375, 230 395, 290 395
+             C 350 395, 365 375, 345 340
+             C 320 330, 260 330, 235 340 Z"
+          fill="url(#wineGrad)"/>
+
+    <!-- Liquid Surface Highlight inside Decanter -->
+    <ellipse cx="290" cy="338" rx="55" ry="8" fill="#FF2B5E" opacity="0.85"/>
+
+    <!-- Glass Reflection Highlight on Decanter Body -->
+    <path d="M 235 370 C 228 355, 240 338, 255 330" 
+          fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+
+    <!-- Decanter Glass Outer Outline -->
+    <path d="M 268 210
+             C 268 245, 280 265, 245 320
+             C 210 370, 225 400, 290 400
+             C 355 400, 370 370, 335 320
+             C 300 265, 312 245, 312 210"
+          fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Decanter Flared Top Rim -->
+    <path d="M 262 210 C 262 205, 318 205, 318 210" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- Ground Accent Line -->
+    <line x1="220" y1="412" x2="360" y2="412" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+  </g>
+
+  <!-- POURING LIQUID STREAM & SPLASHES -->
+  <g id="wine-stream">
+    <!-- Main Pouring Stream -->
+    <path d="M 215 152
+             C 265 160, 283 185, 283 338
+             L 297 338
+             C 297 180, 275 148, 222 140 Z"
+          fill="url(#wineGrad)"/>
+
+    <!-- Stream Contour Detail -->
+    <path d="M 218 142 C 270 150, 290 180, 290 230" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.4"/>
+
+    <!-- Splash Droplets -->
+    <path d="M 262 205 C 258 190, 266 182, 268 182 C 270 182, 272 190, 266 205 Z" fill="#FF2B5E"/>
+    <path d="M 315 200 C 322 188, 328 184, 329 185 C 330 186, 326 193, 318 202 Z" fill="#FF2B5E"/>
+  </g>
+
+  <!-- TILTED WINE GLASS -->
+  <g id="tilted-glass" transform="translate(160, 165) rotate(48)">
+    <!-- Wine Liquid inside Glass Bowl -->
+    <path d="M -30 -10
+             C -30 20, -15 38, 0 38
+             C 15 38, 30 20, 30 -10
+             Z"
+          fill="url(#wineGrad)"/>
+    
+    <!-- Wine Surface Line in Glass -->
+    <ellipse cx="0" cy="-10" rx="30" ry="6" fill="#FF2B5E"/>
+
+    <!-- Glass Bowl Outline -->
+    <path d="M -32 -30
+             L -32 -10
+             C -32 25, -18 42, 0 42
+             C 18 42, 32 25, 32 -10
+             L 32 -30"
+          fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Glass Rim -->
+    <ellipse cx="0" cy="-30" rx="32" ry="5" fill="none" stroke="#FFFFFF" stroke-width="5"/>
+
+    <!-- Glass Stem -->
+    <line x1="0" y1="42" x2="0" y2="105" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- Glass Base -->
+    <path d="M -28 105 C -15 102, 15 102, 28 105" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- Bowl Reflection Highlight -->
+    <path d="M -24 -15 C -24 10, -14 28, -4 33" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" opacity="0.8"/>
+  </g>
 </svg>
