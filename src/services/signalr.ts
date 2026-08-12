@@ -29,7 +29,7 @@ export function createSignalRConnection(queryClient: QueryClient): signalR.HubCo
   if (connection) return connection;
 
   const apiUrl = import.meta.env.VITE_API_URL || '';
-  const apiKey = import.meta.env.VITE_API_KEY || '';
+  const apiKey = import.meta.env.VITE_API_KEY || '__DECANTERR_API_KEY__';
 
   connection = new signalR.HubConnectionBuilder()
     .withUrl(`${apiUrl}/hubs/progress?api_key=${encodeURIComponent(apiKey)}`, {

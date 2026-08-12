@@ -19,7 +19,7 @@ export const booksApi = {
     apiClient.get<SearchResultDto>('/api/books/search', { params: { q: query } }).then((r) => r.data),
 
   getCoverUrl: (asin: string) => {
-    const key = import.meta.env.VITE_API_KEY || '';
+    const key = import.meta.env.VITE_API_KEY || '__DECANTERR_API_KEY__';
     return `/api/books/${asin}/cover?api_key=${encodeURIComponent(key)}`;
   },
 

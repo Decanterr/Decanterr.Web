@@ -1,18 +1,11 @@
 #!/bin/sh
-# Inject runtime environment variables into the built JS
-# This allows VITE_API_URL and VITE_API_KEY to be set at container runtime
+# Inject the runtime API key into the built JS (VITE_API_KEY is a build-time-only
+# Vite variable, so the client bundle ships a placeholder that we substitute here).
 
-if [ -n "$VITE_API_URL" ] || [ -n "$VITE_API_KEY" ]; then
-  # Find all JS files and replace placeholder values
+if [ -n "$VITE_API_KEY" ]; then
   for file in /usr/share/nginx/html/assets/*.js; do
     if [ -f "$file" ]; then
-      # Replace default values with runtime env vars
-      if [ -n "$VITE_API_URL" ]; then
-        sed -i "s|http://localhost:8080|${VITE_API_URL}|g" "$file"
-      fi
-      if [ -n "$VITE_API_KEY" ]; then
-        sed -i "s|CHANGE-ME-TO-A-SECURE-KEY|${VITE_API_KEY}|g" "$file"
-      fi
+      sed -i "s|__DECANTERR_API_KEY__|${VITE_API_KEY}|g" "$file"
     fi
   done
 fi

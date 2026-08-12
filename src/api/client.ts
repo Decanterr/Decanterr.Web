@@ -8,7 +8,7 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiKey = import.meta.env.VITE_API_KEY || '__DECANTERR_API_KEY__';
   if (apiKey) {
     config.headers['X-Api-Key'] = apiKey;
   }
