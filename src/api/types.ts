@@ -128,6 +128,18 @@ export interface AbsFolder {
   fullPath: string;
 }
 
+export interface AbsSettings {
+  enabled: boolean;
+  url: string;
+  hasApiToken: boolean;
+}
+
+export interface UpdateAbsSettingsRequest {
+  enabled: boolean;
+  url: string;
+  apiToken?: string;
+}
+
 // Login types
 export interface LoginStartRequest {
   accountId: string;

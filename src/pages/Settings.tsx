@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -12,13 +13,22 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  TextField,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import {
   CloudDone as ConnectedIcon,
   CloudOff as DisconnectedIcon,
   Sync as SyncIcon,
 } from '@mui/icons-material';
-import { useAbsStatus, useAbsLibraries, useAbsScanLibrary } from '../api/hooks/useAudiobookshelf';
+import {
+  useAbsStatus,
+  useAbsLibraries,
+  useAbsScanLibrary,
+  useAbsSettings,
+  useUpdateAbsSettings,
+} from '../api/hooks/useAudiobookshelf';
 import { useBookStats } from '../api/hooks/useBooks';
 import { useNotification } from '../contexts/NotificationContext';
 
@@ -26,8 +36,34 @@ export default function Settings() {
   const { data: stats } = useBookStats();
   const { data: absStatus, isLoading: absLoading } = useAbsStatus();
   const { data: absLibraries } = useAbsLibraries();
+  const { data: absSettings } = useAbsSettings();
   const absScan = useAbsScanLibrary();
+  const updateAbsSettings = useUpdateAbsSettings();
   const { notify } = useNotification();
+
+  const [absEnabled, setAbsEnabled] = useState(false);
+  const [absUrl, setAbsUrl] = useState('');
+  const [absApiToken, setAbsApiToken] = useState('');
+
+  useEffect(() => {
+    if (absSettings) {
+      setAbsEnabled(absSettings.enabled);
+      setAbsUrl(absSettings.url);
+    }
+  }, [absSettings]);
+
+  const handleAbsSettingsSave = () => {
+    updateAbsSettings.mutate(
+      { enabled: absEnabled, url: absUrl, apiToken: absApiToken || undefined },
+      {
+        onSuccess: () => {
+          setAbsApiToken('');
+          notify('Audiobookshelf settings saved', 'success');
+        },
+        onError: () => notify('Failed to save Audiobookshelf settings', 'error'),
+      }
+    );
+  };
 
   const handleAbsScan = (libraryId: string) => {
     absScan.mutate(libraryId, {
@@ -75,7 +111,7 @@ export default function Settings() {
             }
           />
           <CardContent>
-            {absStatus?.enabled ? (
+            {absStatus?.enabled && (
               <>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   Audiobookshelf integration is enabled. Liberated books are automatically uploaded.
@@ -108,12 +144,44 @@ export default function Settings() {
                     </List>
                   </>
                 )}
+                <Divider sx={{ my: 2 }} />
               </>
-            ) : (
-              <Typography variant="body2" color="text.secondary">
-                Audiobookshelf integration is not enabled. Configure it via the API's appsettings.json.
-              </Typography>
             )}
+
+            <Stack spacing={2}>
+              <FormControlLabel
+                control={
+                  <Switch checked={absEnabled} onChange={(e) => setAbsEnabled(e.target.checked)} />
+                }
+                label="Enable Audiobookshelf integration"
+              />
+              <TextField
+                label="Server URL"
+                placeholder="http://192.168.1.100:13378"
+                value={absUrl}
+                onChange={(e) => setAbsUrl(e.target.value)}
+                size="small"
+                fullWidth
+              />
+              <TextField
+                label="API Key"
+                type="password"
+                placeholder={absSettings?.hasApiToken ? 'Leave blank to keep existing key' : ''}
+                value={absApiToken}
+                onChange={(e) => setAbsApiToken(e.target.value)}
+                size="small"
+                fullWidth
+              />
+              <Box>
+                <Button
+                  variant="contained"
+                  onClick={handleAbsSettingsSave}
+                  disabled={updateAbsSettings.isPending}
+                >
+                  Save
+                </Button>
+              </Box>
+            </Stack>
           </CardContent>
         </Card>
 
@@ -149,12 +217,6 @@ export default function Settings() {
                 <ListItemText
                   primary="Database"
                   secondary="ConnectionStrings__Postgres — PostgreSQL connection string"
-                />
-              </ListItem>
-              <ListItem>
-                <ListItemText
-                  primary="Audiobookshelf"
-                  secondary="Audiobookshelf__Url and Audiobookshelf__ApiToken environment variables"
                 />
               </ListItem>
               <ListItem>
