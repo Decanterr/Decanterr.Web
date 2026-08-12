@@ -101,7 +101,7 @@ export default function Settings() {
           <CardHeader
             title="Audiobookshelf Integration"
             action={
-              absLoading ? (
+              !absStatus?.enabled ? null : absLoading ? (
                 <CircularProgress size={20} />
               ) : absStatus?.connected ? (
                 <Chip icon={<ConnectedIcon />} label="Connected" color="success" size="small" />
