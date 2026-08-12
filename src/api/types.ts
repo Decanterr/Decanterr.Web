@@ -20,6 +20,7 @@ export interface BookDto {
   pictureId?: string;
   datePublished?: string;
   publisher?: string;
+  inAudiobookshelf: boolean;
 }
 
 export interface RatingDto {

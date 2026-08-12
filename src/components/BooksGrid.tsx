@@ -3,6 +3,9 @@ import { Box, Chip, IconButton, Rating, Tooltip, Avatar } from '@mui/material';
 import { DataGrid, type GridColDef, type GridRowSelectionModel } from '@mui/x-data-grid';
 import { Download as DownloadIcon, CheckCircle, Error as ErrorIcon, HourglassEmpty, Cancel } from '@mui/icons-material';
 import { booksApi } from '../api/endpoints/books';
+import { useAbsStatus, useAbsUploadBook } from '../api/hooks/useAudiobookshelf';
+import { useNotification } from '../contexts/NotificationContext';
+import AbsIcon from './AbsIcon';
 import type { BookDto } from '../api/types';
 
 interface BooksGridProps {
@@ -37,6 +40,18 @@ function getStatusIcon(status?: string) {
 }
 
 export default function BooksGrid({ books, loading, onBookClick, onLiberate, onSelectionChange }: BooksGridProps) {
+  const { data: absStatus } = useAbsStatus();
+  const absUpload = useAbsUploadBook();
+  const { notify } = useNotification();
+  const absAvailable = !!absStatus?.enabled && !!absStatus?.connected;
+
+  const handleAbsUpload = (asin: string) => {
+    absUpload.mutate(asin, {
+      onSuccess: () => notify('Book added to Audiobookshelf', 'success'),
+      onError: () => notify('Failed to add book to Audiobookshelf', 'error'),
+    });
+  };
+
   const columns = useMemo<GridColDef<BookDto>[]>(() => [
     {
       field: 'liberate',
@@ -167,6 +182,49 @@ export default function BooksGrid({ books, loading, onBookClick, onLiberate, onS
       },
     },
     {
+      field: 'abs',
+      headerName: 'ABS',
+      align: 'center',
+      headerAlign: 'center',
+      width: 70,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => {
+        const isUnlocked = params.row.userData?.bookStatus === 'Liberated';
+
+        if (!absAvailable) {
+          return (
+            <Tooltip title="Audiobookshelf integration is off or disconnected">
+              <span><AbsIcon variant="disabled" /></span>
+            </Tooltip>
+          );
+        }
+
+        if (params.row.inAudiobookshelf) {
+          return (
+            <Tooltip title="In Audiobookshelf">
+              <span><AbsIcon variant="solid" /></span>
+            </Tooltip>
+          );
+        }
+
+        return (
+          <Tooltip title={isUnlocked ? 'Add to Audiobookshelf' : 'Unlock this book first'}>
+            <span>
+              <IconButton
+                size="small"
+                disabled={!isUnlocked || absUpload.isPending}
+                onClick={(e) => { e.stopPropagation(); handleAbsUpload(params.row.audibleProductId); }}
+                sx={{ opacity: isUnlocked ? 1 : 0.4 }}
+              >
+                <AbsIcon variant="hollow" />
+              </IconButton>
+            </span>
+          </Tooltip>
+        );
+      },
+    },
+    {
       field: 'tags',
       headerName: 'Tags',
       width: 140,
@@ -190,7 +248,7 @@ export default function BooksGrid({ books, loading, onBookClick, onLiberate, onS
       width: 200,
       valueGetter: (_value, row) => row.libraryInfo?.account || '',
     },
-  ], [onLiberate]);
+  ], [onLiberate, absAvailable, absUpload.isPending]);
 
   const handleRowSelection = (model: GridRowSelectionModel) => {
     onSelectionChange(model.ids ? Array.from(model.ids).map(String) : (model as unknown as string[]));

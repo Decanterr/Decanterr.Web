@@ -16,5 +16,8 @@ export const audiobookshelfApi = {
 
   updateSettings: (request: UpdateAbsSettingsRequest) =>
     apiClient.put('/api/audiobookshelf/settings', request).then((r) => r.data),
+
+  uploadBook: (asin: string) =>
+    apiClient.post(`/api/audiobookshelf/upload/${asin}`).then((r) => r.data),
 };
 

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { audiobookshelfApi } from '../endpoints/audiobookshelf';
 import type { UpdateAbsSettingsRequest } from '../types';
+import { bookKeys } from './useBooks';
 
 export const absKeys = {
   status: ['audiobookshelf', 'status'] as const,
@@ -43,6 +44,16 @@ export function useUpdateAbsSettings() {
       queryClient.invalidateQueries({ queryKey: absKeys.settings });
       queryClient.invalidateQueries({ queryKey: absKeys.status });
       queryClient.invalidateQueries({ queryKey: absKeys.libraries });
+    },
+  });
+}
+
+export function useAbsUploadBook() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (asin: string) => audiobookshelfApi.uploadBook(asin),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: bookKeys.all });
     },
   });
 }
